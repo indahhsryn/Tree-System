@@ -1,0 +1,290 @@
+{
+	"info": {
+		"_postman_id": "12668b5e-fc83-4e1b-8b69-d633c62143cd",
+		"name": "Menu Tress",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "46314792",
+		"_collection_link": "https://api-test-6983.postman.co/workspace/api-test-Workspace~2b7cf9a7-706d-455b-8474-925420604551/collection/46314792-12668b5e-fc83-4e1b-8b69-d633c62143cd?action=share&source=collection_link&creator=46314792"
+	},
+	"item": [
+		{
+			"name": "menus",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"title\": \"Belajar NestJS222\",\n  \"descriptions\": \"Testing API pakai Postman222\",\n  \"is_done\": false\n}\n"
+				},
+				"url": {
+					"raw": "{{base_url}}api/menus",
+					"host": [
+						"{{base_url}}api"
+					],
+					"path": [
+						"menus"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "menusid",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"title\": \"Belajar NestJS222\",\n  \"descriptions\": \"Testing API pakai Postman222\",\n  \"is_done\": false\n}\n"
+				},
+				"url": {
+					"raw": "{{base_url}}api/menus/1",
+					"host": [
+						"{{base_url}}api"
+					],
+					"path": [
+						"menus",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "menus",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"title\": \"settings\",\n  \"url\": \"/seeting\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}api/menus",
+					"host": [
+						"{{base_url}}api"
+					],
+					"path": [
+						"menus"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "New Request",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"title\": \"Dashboard\",\n  \"url\": \"/dashboard\"\n}\n"
+				},
+				"url": {
+					"raw": "{{base_url}}api/menus/1",
+					"host": [
+						"{{base_url}}api"
+					],
+					"path": [
+						"menus",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "menus",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"title\": \"Dashboard Updated\",\n  \"url\": \"/dashboard-new\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}api/menus/2",
+					"host": [
+						"{{base_url}}api"
+					],
+					"path": [
+						"menus",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "menus",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"newParentId\": 3\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}api/menus/2/move",
+					"host": [
+						"{{base_url}}api"
+					],
+					"path": [
+						"menus",
+						"2",
+						"move"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "New Request",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"newOrder\": 0\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}api/menus/2/reorder",
+					"host": [
+						"{{base_url}}api"
+					],
+					"path": [
+						"menus",
+						"2",
+						"reorder"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:3000/",
+			"type": "string"
+		}
+	]
+}
