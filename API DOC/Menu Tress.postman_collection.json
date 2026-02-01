@@ -1,0 +1,801 @@
+{
+	"info": {
+		"_postman_id": "12668b5e-fc83-4e1b-8b69-d633c62143cd",
+		"name": "Menu Tress",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "46314792",
+		"_collection_link": "https://api-test-6983.postman.co/workspace/api-test-Workspace~2b7cf9a7-706d-455b-8474-925420604551/collection/46314792-12668b5e-fc83-4e1b-8b69-d633c62143cd?action=share&source=collection_link&creator=46314792"
+	},
+	"item": [
+		{
+			"name": "menus",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"title\": \"Belajar NestJS222\",\n  \"descriptions\": \"Testing API pakai Postman222\",\n  \"is_done\": false\n}\n"
+				},
+				"url": {
+					"raw": "{{base_url}}api/menus",
+					"host": [
+						"{{base_url}}api"
+					],
+					"path": [
+						"menus"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "response all menu",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Belajar NestJS222\",\n  \"descriptions\": \"Testing API pakai Postman222\",\n  \"is_done\": false\n}\n"
+						},
+						"url": {
+							"raw": "{{base_url}}api/menus",
+							"host": [
+								"{{base_url}}api"
+							],
+							"path": [
+								"menus"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": null,
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "606"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"25e-llVZ13nfrhXGq5WjpAM3ahJFp6c\""
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 01 Feb 2026 15:59:00 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "[\n    {\n        \"id\": 17,\n        \"title\": \"Systems\",\n        \"url\": \"systems\",\n        \"order\": 0,\n        \"parent\": null,\n        \"children\": []\n    },\n    {\n        \"id\": 18,\n        \"title\": \"systemmanagement\",\n        \"url\": \"system1\",\n        \"order\": 1,\n        \"parent\": null,\n        \"children\": [\n            {\n                \"id\": 19,\n                \"title\": \"System Management1\",\n                \"url\": \"manage12\",\n                \"order\": 0,\n                \"parent\": {\n                    \"id\": 18,\n                    \"title\": \"systemmanagement\",\n                    \"url\": \"system1\",\n                    \"order\": 1\n                },\n                \"children\": [\n                    {\n                        \"id\": 24,\n                        \"title\": \"cek\",\n                        \"url\": \"cek\",\n                        \"order\": 0,\n                        \"parent\": {\n                            \"id\": 19,\n                            \"title\": \"System Management1\",\n                            \"url\": \"manage12\",\n                            \"order\": 0\n                        },\n                        \"children\": []\n                    }\n                ]\n            },\n            {\n                \"id\": 20,\n                \"title\": \"User & Controls\",\n                \"url\": \"/users\",\n                \"order\": 1,\n                \"parent\": {\n                    \"id\": 18,\n                    \"title\": \"systemmanagement\",\n                    \"url\": \"system1\",\n                    \"order\": 1\n                },\n                \"children\": []\n            }\n        ]\n    }\n]"
+				}
+			]
+		},
+		{
+			"name": "menusid",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"title\": \"Belajar NestJS222\",\n  \"descriptions\": \"Testing API pakai Postman222\",\n  \"is_done\": false\n}\n"
+				},
+				"url": {
+					"raw": "{{base_url}}api/menus/20",
+					"host": [
+						"{{base_url}}api"
+					],
+					"path": [
+						"menus",
+						"20"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "menu by id",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Belajar NestJS222\",\n  \"descriptions\": \"Testing API pakai Postman222\",\n  \"is_done\": false\n}\n"
+						},
+						"url": {
+							"raw": "{{base_url}}api/menus/20",
+							"host": [
+								"{{base_url}}api"
+							],
+							"path": [
+								"menus",
+								"20"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": null,
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "146"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"92-Vgc2sx4/FK6lpYUvg5aSLGiItNE\""
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 01 Feb 2026 15:59:13 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": 20,\n    \"title\": \"User & Controls\",\n    \"url\": \"/users\",\n    \"order\": 1,\n    \"parent\": {\n        \"id\": 18,\n        \"title\": \"systemmanagement\",\n        \"url\": \"system1\",\n        \"order\": 1\n    },\n    \"children\": []\n}"
+				}
+			]
+		},
+		{
+			"name": "menus",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"title\": \"cek\",\n  \"url\": \"/cek1\",\n  \"parent_id\": null\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}api/menus",
+					"host": [
+						"{{base_url}}api"
+					],
+					"path": [
+						"menus"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "New Request",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"cek\",\n  \"url\": \"/cek1\",\n  \"parent_id\": null\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}api/menus",
+							"host": [
+								"{{base_url}}api"
+							],
+							"path": [
+								"menus"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": "",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "61"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"3d-7ga8PzRAkablSq/cBm7Hy5c1axs\""
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 01 Feb 2026 16:00:02 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": 26,\n    \"title\": \"cek\",\n    \"url\": \"/cek1\",\n    \"order\": 2,\n    \"parent\": null\n}"
+				},
+				{
+					"name": "create menu",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"cek\",\n  \"url\": \"/cek1\",\n  \"parent_id\": null\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}api/menus",
+							"host": [
+								"{{base_url}}api"
+							],
+							"path": [
+								"menus"
+							]
+						}
+					},
+					"status": "Created",
+					"code": 201,
+					"_postman_previewlanguage": null,
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "61"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"3d-7ga8PzRAkablSq/cBm7Hy5c1axs\""
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 01 Feb 2026 16:00:02 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": 26,\n    \"title\": \"cek\",\n    \"url\": \"/cek1\",\n    \"order\": 2,\n    \"parent\": null\n}"
+				}
+			]
+		},
+		{
+			"name": "New Request",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"title\": \"Dashboard\",\n  \"url\": \"/dashboard\"\n}\n"
+				},
+				"url": {
+					"raw": "{{base_url}}api/menus/26",
+					"host": [
+						"{{base_url}}api"
+					],
+					"path": [
+						"menus",
+						"26"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "response",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Dashboard\",\n  \"url\": \"/dashboard\"\n}\n"
+						},
+						"url": {
+							"raw": "{{base_url}}api/menus/26",
+							"host": [
+								"{{base_url}}api"
+							],
+							"path": [
+								"menus",
+								"26"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": null,
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "26"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"1a-2ADTEFgl1j4vUq+Nb7lZHuSSNeg\""
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 01 Feb 2026 16:01:47 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"Menu deleted\"\n}"
+				}
+			]
+		},
+		{
+			"name": "menus",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"title\": \"Dashboard Updated\",\n  \"url\": \"/dashboard-new\",\n  \"parent_id\": 17\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}api/menus/20",
+					"host": [
+						"{{base_url}}api"
+					],
+					"path": [
+						"menus",
+						"20"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "update menu",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Dashboard Updated\",\n  \"url\": \"/dashboard-new\",\n  \"parent_id\": 17\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}api/menus/20",
+							"host": [
+								"{{base_url}}api"
+							],
+							"path": [
+								"menus",
+								"20"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": null,
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "133"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"85-Xc9O8zg3kSXUxXUm3dWeYMYaoXY\""
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 01 Feb 2026 16:04:17 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": 20,\n    \"title\": \"Dashboard Updated\",\n    \"url\": \"/dashboard-new\",\n    \"order\": 1,\n    \"parent\": {\n        \"id\": 17,\n        \"title\": \"Systems\",\n        \"url\": \"systems\",\n        \"order\": 0\n    }\n}"
+				}
+			]
+		},
+		{
+			"name": "move_menus",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"newParentId\": null\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}api/menus/20/move",
+					"host": [
+						"{{base_url}}api"
+					],
+					"path": [
+						"menus",
+						"20",
+						"move"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "move",
+					"originalRequest": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"newParentId\": 20\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}api/menus/20/move",
+							"host": [
+								"{{base_url}}api"
+							],
+							"path": [
+								"menus",
+								"20",
+								"move"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": null,
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "84"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"54-7f4+Bv9XIkXeSUlgPUVOFrhhZZg\""
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 01 Feb 2026 16:05:43 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"Menu cannot be parent of itself\",\n    \"error\": \"Bad Request\",\n    \"statusCode\": 400\n}"
+				}
+			]
+		},
+		{
+			"name": "order_menu",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"newOrder\": 8\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}api/menus/17/reorder",
+					"host": [
+						"{{base_url}}api"
+					],
+					"path": [
+						"menus",
+						"17",
+						"reorder"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "order",
+					"originalRequest": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"newOrder\": 8\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}api/menus/17/reorder",
+							"host": [
+								"{{base_url}}api"
+							],
+							"path": [
+								"menus",
+								"17",
+								"reorder"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": null,
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "67"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"43-TLkAFjF4MVVTIYcnOUMF1Ghul3c\""
+						},
+						{
+							"key": "Date",
+							"value": "Sun, 01 Feb 2026 14:25:03 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=5"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": 17,\n    \"title\": \"Systems\",\n    \"url\": \"systems\",\n    \"order\": 8,\n    \"parent\": null\n}"
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:30000/",
+			"type": "string"
+		}
+	]
+}

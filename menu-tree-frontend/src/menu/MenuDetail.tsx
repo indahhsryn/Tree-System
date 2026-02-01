@@ -1,7 +1,12 @@
 import { useEffect, useState } from 'react';
 import { API } from '../config/api';
 import { Menu } from '../types/menu';
-import { CheckCircle, Loader2, Trash2 } from 'lucide-react';
+import {
+  CheckCircle,
+  Loader2,
+  Trash2,
+  XCircle,
+} from 'lucide-react';
 
 export default function MenuDetail({
   menu,
@@ -18,9 +23,10 @@ export default function MenuDetail({
   const [url, setUrl] = useState('');
   const [parentId, setParentId] = useState<number | null>(null);
   const [allMenus, setAllMenus] = useState<Menu[]>([]);
-  const [loading, setLoading] = useState(false);
 
+  const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState('');
+  const [error, setError] = useState('');
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   // =====================
@@ -29,7 +35,8 @@ export default function MenuDetail({
   useEffect(() => {
     fetch(API.menus)
       .then(res => res.json())
-      .then(setAllMenus);
+      .then(setAllMenus)
+      .catch(() => {});
   }, []);
 
   // =====================
@@ -45,55 +52,66 @@ export default function MenuDetail({
       setUrl('');
       setParentId(null);
     }
+    setError(''); // reset error saat ganti menu
   }, [menu]);
 
   // =====================
-  // SAVE (CREATE / UPDATE) — FIX FINAL
+  // SAVE (CREATE / UPDATE)
   // =====================
   const save = async () => {
     if (!title) return;
     setLoading(true);
+    setError('');
 
-    let payload: any;
+    try {
+      let payload: any;
 
-    if (isCreate) {
-      payload = {
-        title,
-        url,
-      };
-
-      // CREATE: kirim parentId hanya kalau ADA
-      if (parentId !== null) {
-        payload.parentId = parentId;
+      if (isCreate) {
+        payload = { title, url };
+        if (parentId !== null) payload.parentId = parentId;
+      } else {
+        payload = {
+          title,
+          url,
+          parent_id: parentId, // boleh null
+        };
       }
-    } else {
-      //  UPDATE: parent_id boleh null / number
-      payload = {
-        title,
-        url,
-        parent_id: parentId,
-      };
-    }
 
-    const endpoint = isCreate
-      ? API.menus
-      : `${API.menus}/${menu!.id}`;
+      const endpoint = isCreate
+        ? API.menus
+        : `${API.menus}/${menu!.id}`;
 
-    const method = isCreate ? 'POST' : 'PUT';
+      const method = isCreate ? 'POST' : 'PUT';
 
-    await fetch(endpoint, {
-      method,
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(payload),
-    });
+      const res = await fetch(endpoint, {
+        method,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
 
-    setSuccess(isCreate ? 'Menu created successfully' : 'Menu updated successfully');
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(
+          err.message || 'Failed to save menu',
+        );
+      }
 
-    setTimeout(() => {
+      setSuccess(
+        isCreate
+          ? 'Menu created successfully'
+          : 'Menu updated successfully',
+      );
+
+      setTimeout(() => {
+        setSuccess('');
+        onSaved();
+      }, 1000);
+    } catch (e: any) {
+      // 🔥 ERROR MUNCUL DI SINI (INFINITE LOOP DLL)
+      setError(e.message);
+    } finally {
       setLoading(false);
-      setSuccess('');
-      onSaved();
-    }, 1200);
+    }
   };
 
   // =====================
@@ -101,20 +119,34 @@ export default function MenuDetail({
   // =====================
   const confirmDelete = async () => {
     if (!menu) return;
-    setShowDeleteConfirm(false);
     setLoading(true);
+    setError('');
+    setShowDeleteConfirm(false);
 
-    await fetch(`${API.menus}/${menu.id}`, {
-      method: 'DELETE',
-    });
+    try {
+      const res = await fetch(
+        `${API.menus}/${menu.id}`,
+        { method: 'DELETE' },
+      );
 
-    setSuccess('Menu deleted successfully');
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(
+          err.message || 'Failed to delete menu',
+        );
+      }
 
-    setTimeout(() => {
+      setSuccess('Menu deleted successfully');
+
+      setTimeout(() => {
+        setSuccess('');
+        onSaved();
+      }, 1000);
+    } catch (e: any) {
+      setError(e.message);
+    } finally {
       setLoading(false);
-      setSuccess('');
-      onSaved();
-    }, 1200);
+    }
   };
 
   return (
@@ -130,6 +162,13 @@ export default function MenuDetail({
         <h2 className="text-lg font-semibold mb-4">
           {isCreate ? 'Create Menu' : 'Edit Menu'}
         </h2>
+
+        {error && (
+          <div className="mb-4 flex items-center gap-2 text-sm text-red-700 bg-red-50 px-4 py-2 rounded-lg">
+            <XCircle className="w-4 h-4" />
+            {error}
+          </div>
+        )}
 
         {!isCreate && (
           <>
@@ -147,7 +186,11 @@ export default function MenuDetail({
           <select
             value={parentId ?? ''}
             onChange={e =>
-              setParentId(e.target.value ? Number(e.target.value) : null)
+              setParentId(
+                e.target.value
+                  ? Number(e.target.value)
+                  : null,
+              )
             }
             className="w-full mt-1 px-4 py-2 rounded-lg bg-gray-100 text-sm"
           >
@@ -162,11 +205,12 @@ export default function MenuDetail({
           </select>
         </div>
 
-        {/* ACTION BUTTONS */}
+        {/* ACTION */}
         <div className="flex gap-3 mt-6">
           <button
             onClick={save}
-            className="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-full font-semibold"
+            disabled={loading}
+            className="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-full font-semibold disabled:opacity-60"
           >
             Save
           </button>
@@ -174,7 +218,8 @@ export default function MenuDetail({
           {!isCreate && (
             <button
               onClick={() => setShowDeleteConfirm(true)}
-              className="w-12 h-12 rounded-full bg-red-50 text-red-600 flex items-center justify-center hover:bg-red-100"
+              disabled={loading}
+              className="w-12 h-12 rounded-full bg-red-50 text-red-600 flex items-center justify-center hover:bg-red-100 disabled:opacity-60"
             >
               <Trash2 />
             </button>
@@ -186,7 +231,9 @@ export default function MenuDetail({
       {showDeleteConfirm && (
         <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center">
           <div className="bg-white rounded-2xl p-6 w-96">
-            <h3 className="text-lg font-semibold mb-2">Delete Menu</h3>
+            <h3 className="text-lg font-semibold mb-2">
+              Delete Menu
+            </h3>
             <p className="text-sm text-gray-500 mb-6">
               This menu and all of its children will be permanently deleted.
               <br />
@@ -195,7 +242,9 @@ export default function MenuDetail({
 
             <div className="flex justify-end gap-3">
               <button
-                onClick={() => setShowDeleteConfirm(false)}
+                onClick={() =>
+                  setShowDeleteConfirm(false)
+                }
                 className="px-4 py-2 rounded-lg bg-gray-100"
               >
                 Cancel
@@ -211,7 +260,7 @@ export default function MenuDetail({
         </div>
       )}
 
-      {/* SUCCESS POPUP */}
+      {/* SUCCESS */}
       {success && (
         <div className="fixed inset-0 bg-black/30 flex items-center justify-center z-50">
           <div className="bg-white px-6 py-4 rounded-xl flex flex-col items-center gap-2">
@@ -230,7 +279,9 @@ export default function MenuDetail({
 
 const Field = ({ label, value }: any) => (
   <div className="mb-3">
-    <label className="text-sm text-gray-500">{label}</label>
+    <label className="text-sm text-gray-500">
+      {label}
+    </label>
     <input
       disabled
       value={value}
@@ -241,7 +292,9 @@ const Field = ({ label, value }: any) => (
 
 const Input = ({ label, value, set }: any) => (
   <div className="mb-3">
-    <label className="text-sm text-gray-500">{label}</label>
+    <label className="text-sm text-gray-500">
+      {label}
+    </label>
     <input
       value={value}
       onChange={e => set(e.target.value)}

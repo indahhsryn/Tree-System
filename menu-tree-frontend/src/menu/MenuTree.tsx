@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { API } from '../config/api';
 import { Menu } from '../types/menu';
 import MenuNode from './MenuNode';
+import { XCircle } from 'lucide-react';
 
 interface Props {
   onSelect: (menu: Menu, depth: number) => void;
@@ -10,15 +11,16 @@ interface Props {
 
 export default function MenuTree({ onSelect, reloadKey }: Props) {
   const [menus, setMenus] = useState<Menu[]>([]);
-  const [rootId, setRootId] = useState<number | null>(null);
+  const [selectedId, setSelectedId] = useState<number | null>(null);
   const [expandAll, setExpandAll] = useState(true);
   const [dragging, setDragging] = useState<Menu | null>(null);
+  const [error, setError] = useState('');
 
   const fetchMenus = async () => {
     const res = await fetch(API.menus);
     const data: Menu[] = await res.json();
     setMenus(data);
-    if (!rootId && data.length) setRootId(data[0].id);
+    if (!selectedId && data.length) setSelectedId(data[0].id);
   };
 
   useEffect(() => {
@@ -26,39 +28,60 @@ export default function MenuTree({ onSelect, reloadKey }: Props) {
   }, [reloadKey]);
 
   const roots = menus.filter(m => m.parent === null);
-  const selectedRoot = roots.find(r => r.id === rootId);
+  const selectedMenu = menus.find(m => m.id === selectedId) || null;
 
   // =========================
-  // DROP HANDLER (ROOT / NODE)
+  // DROP HANDLER
   // =========================
   const handleDrop = async (target: Menu | null) => {
     if (!dragging) return;
+    setError('');
 
-    await fetch(`${API.menus}/${dragging.id}/move`, {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        newParentId: target ? target.id : null,
-      }),
-    });
+    try {
+      const res = await fetch(
+        `${API.menus}/${dragging.id}/move`,
+        {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            newParentId: target ? target.id : null,
+          }),
+        },
+      );
 
-    setDragging(null);
-    fetchMenus();
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.message);
+      }
+
+      setDragging(null);
+      fetchMenus();
+    } catch (e: any) {
+      setError(e.message);
+      setDragging(null);
+    }
   };
 
   return (
     <div className="bg-white rounded-2xl p-6 shadow-sm relative">
       <label className="text-sm text-gray-500">Menu</label>
 
-      {/* ROOT SELECT */}
+      {/* ERROR */}
+      {error && (
+        <div className="mb-3 flex items-center gap-2 text-sm text-red-700 bg-red-50 px-4 py-2 rounded-lg">
+          <XCircle className="w-4 h-4" />
+          {error}
+        </div>
+      )}
+
       <select
-        value={rootId ?? ''}
-        onChange={e => setRootId(Number(e.target.value))}
+        value={selectedId ?? ''}
+        onChange={e => setSelectedId(Number(e.target.value))}
         className="w-full mt-1 mb-4 px-4 py-2 rounded-lg bg-gray-100 text-sm"
       >
-        {roots.map(r => (
-          <option key={r.id} value={r.id}>
-            {r.title}
+        {menus.map(m => (
+          <option key={m.id} value={m.id}>
+            {m.title}
           </option>
         ))}
       </select>
@@ -83,16 +106,18 @@ export default function MenuTree({ onSelect, reloadKey }: Props) {
         </button>
       </div>
 
-      {/*INVISIBLE ROOT DROP ZONE (JANGAN DIHAPUS) */}
       <div
-        onDragOver={e => e.preventDefault()}
-        onDrop={() => handleDrop(null)}
-        className="absolute inset-0 z-0"
-      />
+  onDragOver={e => dragging && e.preventDefault()}
+  onDrop={() => dragging && handleDrop(null)}
+  className={`absolute inset-0 z-0 ${
+    dragging ? 'pointer-events-auto' : 'pointer-events-none'
+  }`}
+/>
+
 
       {/* TREE */}
       <div className="relative z-10 space-y-1">
-        {/* EXPAND ALL */}
+        {/* EXPAND ALL → SEMUA ROOT */}
         {expandAll &&
           roots.map(root => (
             <MenuNode
@@ -106,10 +131,9 @@ export default function MenuTree({ onSelect, reloadKey }: Props) {
             />
           ))}
 
-        {/* COLLAPSE ALL */}
-        {!expandAll && selectedRoot && (
+        {!expandAll && selectedMenu && (
           <MenuNode
-            menu={selectedRoot}
+            menu={selectedMenu}
             depth={0}
             expandAll={false}
             onSelect={onSelect}
