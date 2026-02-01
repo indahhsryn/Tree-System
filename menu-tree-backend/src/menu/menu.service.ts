@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Menu } from './entities/menu.entity';
@@ -13,7 +17,7 @@ export class MenuService {
   ) {}
 
   // ======================
-  // GET ALL (TREE)
+  // FIND ALL (TREE)
   // ======================
   async findAll() {
     const menus = await this.menuRepo.find({
@@ -26,22 +30,24 @@ export class MenuService {
 
   private buildTree(menus: Menu[], parentId: number | null = null) {
     return menus
-      .filter((m) =>
-        parentId === null ? m.parent === null : m.parent?.id === parentId,
+      .filter(menu =>
+        parentId === null
+          ? menu.parent === null
+          : menu.parent?.id === parentId,
       )
-      .map((m) => ({
-        ...m,
-        children: this.buildTree(menus, m.id),
+      .map(menu => ({
+        ...menu,
+        children: this.buildTree(menus, menu.id),
       }));
   }
 
   // ======================
-  // GET ONE
+  // FIND ONE
   // ======================
   async findOne(id: number) {
     const menu = await this.menuRepo.findOne({
       where: { id },
-      relations: ['children'],
+      relations: ['parent', 'children'],
     });
 
     if (!menu) {
@@ -52,13 +58,14 @@ export class MenuService {
   }
 
   // ======================
-  // CREATE
+  // CREATE (parentId)
   // ======================
   async create(dto: CreateMenuDto) {
     let parent: Menu | null = null;
 
-    if (dto.parentId) {
+    if (dto.parentId !== undefined) {
       parent = await this.menuRepo.findOneBy({ id: dto.parentId });
+
       if (!parent) {
         throw new NotFoundException('Parent menu not found');
       }
@@ -67,23 +74,57 @@ export class MenuService {
     const menu = this.menuRepo.create({
       title: dto.title,
       url: dto.url,
-      parent: parent ?? null,
+      parent,
     });
 
     return this.menuRepo.save(menu);
   }
 
   // ======================
-  // UPDATE
+  // UPDATE (parent_id)
   // ======================
   async update(id: number, dto: UpdateMenuDto) {
-    const menu = await this.menuRepo.findOneBy({ id });
+    const menu = await this.menuRepo.findOne({
+      where: { id },
+      relations: ['parent'],
+    });
 
     if (!menu) {
       throw new NotFoundException('Menu not found');
     }
 
-    Object.assign(menu, dto);
+    // update basic fields
+    if (dto.title !== undefined) {
+      menu.title = dto.title;
+    }
+
+    if (dto.url !== undefined) {
+      menu.url = dto.url;
+    }
+
+    // update parent (snake_case)
+    if (dto.parent_id !== undefined) {
+      if (dto.parent_id === null) {
+        menu.parent = null;
+      } else {
+        if (dto.parent_id === id) {
+          throw new BadRequestException(
+            'Menu cannot be parent of itself',
+          );
+        }
+
+        const parent = await this.menuRepo.findOneBy({
+          id: dto.parent_id,
+        });
+
+        if (!parent) {
+          throw new NotFoundException('Parent menu not found');
+        }
+
+        menu.parent = parent;
+      }
+    }
+
     return this.menuRepo.save(menu);
   }
 
@@ -102,32 +143,43 @@ export class MenuService {
   }
 
   // ======================
-  // MOVE (BONUS)
+  // MOVE (newParentId)
   // ======================
-  async move(id: number, newParentId?: number) {
+  async move(id: number, newParentId: number | null) {
     const menu = await this.menuRepo.findOne({
       where: { id },
+      relations: ['parent'],
     });
 
     if (!menu) {
       throw new NotFoundException('Menu not found');
     }
 
-    let newParent: Menu | null = null;
-
-    if (newParentId !== undefined) {
-      newParent = await this.menuRepo.findOneBy({ id: newParentId });
-      if (!newParent) {
-        throw new NotFoundException('New parent not found');
+    if (newParentId === null) {
+      menu.parent = null;
+    } else {
+      if (newParentId === id) {
+        throw new BadRequestException(
+          'Menu cannot be parent of itself',
+        );
       }
+
+      const newParent = await this.menuRepo.findOneBy({
+        id: newParentId,
+      });
+
+      if (!newParent) {
+        throw new NotFoundException('Parent menu not found');
+      }
+
+      menu.parent = newParent;
     }
 
-    menu.parent = newParent;
     return this.menuRepo.save(menu);
   }
 
   // ======================
-  // REORDER (BONUS)
+  // REORDER
   // ======================
   async reorder(id: number, newOrder: number) {
     const menu = await this.menuRepo.findOneBy({ id });

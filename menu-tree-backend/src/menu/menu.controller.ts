@@ -51,7 +51,8 @@ export class MenuController {
     @Param('id') id: number,
     @Body() dto: MoveMenuDto,
   ) {
-    return this.menuService.move(+id, dto.newParentId);
+    // ⬇️ FIX UTAMA: undefined → null
+    return this.menuService.move(+id, dto.newParentId ?? null);
   }
 
   // ======================
